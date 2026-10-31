@@ -1,0 +1,604 @@
+<!doctype html>
+<!--
+  Prototipo © 2026 Pasquale Ercolino — tutti i diritti riservati.
+  Realizzato come proposta per STAICONTENT Studio. Concesso in visione solo per valutare la proposta:
+  non è consentito copiarlo, modificarlo o pubblicarlo senza accordo scritto con l'autore.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFE500">
+<meta name="robots" content="noindex, nofollow">
+<meta name="author" content="Pasquale Ercolino">
+<meta name="copyright" content="© 2026 Pasquale Ercolino">
+<title>STAICONTENT Studio</title>
+<meta name="description" content="Studio creativo a Salerno: social media management, content creation, branding e comunicazione di eventi e festival. Prima di fare una storia, ascoltiamo la tua :)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yellow:#FFE500;
+  --purple:#5B2BD6;
+  --purple-deep:#2A1366;
+  --ink:#0F0D14;
+  --cream:#FFFBEA;
+  --muted:#4A4458;
+  --radius:22px;
+  --gutter:20px;
+  --font-head:'Syne',system-ui,sans-serif;
+  --font-body:'Manrope',system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);font-size:16px;line-height:1.55;color:var(--ink);background:var(--cream);overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--purple);outline-offset:3px;border-radius:8px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:10px 14px;border-radius:10px;z-index:100}
+.skip:focus{left:8px}
+.proto{background:var(--ink);color:var(--cream);font-size:.78rem;font-weight:700;text-align:center;padding:calc(6px + env(safe-area-inset-top)) var(--gutter) 6px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3{font-family:var(--font-head);line-height:1.02;letter-spacing:-.02em}
+.eyebrow{font-weight:800;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+
+/* ---------- Top bar ---------- */
+.top{position:sticky;top:0;z-index:50;background:var(--yellow);border-bottom:2px solid var(--ink);padding-top:env(safe-area-inset-top)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-head);font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.logo-mark{width:40px;height:40px;border-radius:50%;background:var(--purple);color:var(--yellow);display:grid;place-items:center;font-size:1.35rem;font-weight:800;flex:none}
+.logo small{display:block;font-family:var(--font-body);font-weight:700;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--purple)}
+.nav{display:none;gap:26px;font-weight:700}
+.nav a{text-decoration:none;padding:10px 0}
+.nav a:hover{color:var(--purple)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;border:2px solid var(--ink);font-weight:800;text-decoration:none;font-size:1rem;transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s}
+.btn-ink{background:var(--ink);color:var(--yellow)}
+.btn-purple{background:var(--purple);color:#fff;border-color:var(--purple)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-yellow{background:var(--yellow);color:var(--ink)}
+.btn:active{transform:scale(.97)}
+@media (hover:hover){.btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}}
+.btn-sm{min-height:44px;padding:0 18px;font-size:.92rem}
+.menu-btn{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);display:grid;place-items:center}
+.top-actions{display:flex;gap:8px;align-items:center}
+.top-actions .btn-sm{display:none}
+
+/* mobile menu */
+.sheet{position:fixed;inset:0;z-index:60;background:var(--purple);color:#fff;padding:calc(env(safe-area-inset-top) + 18px) var(--gutter) 32px;display:flex;flex-direction:column;transform:translateY(-100%);visibility:hidden;transition:transform .26s cubic-bezier(.4,0,1,1),visibility 0s linear .26s}
+.sheet.open{transform:none;visibility:visible;transition:transform .42s var(--ease),visibility 0s}
+/* voci: escono tutte insieme, entrano a cascata dopo il pannello */
+.sheet nav a,.sheet>.btn{opacity:0;transform:translateY(-10px);transition:opacity .15s,transform .15s}
+.sheet.open nav a,.sheet.open>.btn{opacity:1;transform:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.sheet.open nav a:nth-child(1){transition-delay:.14s}
+.sheet.open nav a:nth-child(2){transition-delay:.18s}
+.sheet.open nav a:nth-child(3){transition-delay:.22s}
+.sheet.open nav a:nth-child(4){transition-delay:.26s}
+.sheet.open nav a:nth-child(5){transition-delay:.30s}
+.sheet.open>.btn{transition-delay:.34s}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;height:46px}
+.sheet nav{display:flex;flex-direction:column;margin-top:40px}
+.sheet nav a{font-family:var(--font-head);font-weight:800;font-size:2.4rem;text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.18)}
+.sheet .btn{margin-top:auto}
+.sheet .menu-btn{border-color:#fff;color:#fff}
+.sheet .logo-mark{background:var(--yellow);color:var(--purple)}
+
+/* ---------- Hero ---------- */
+.hero{background:var(--yellow);padding:36px 0 0;overflow:hidden;position:relative}
+.hero h1{font-size:clamp(2.2rem,10vw,6.2rem);font-weight:800;margin:14px 0 18px}
+.hero h1 .hl{color:var(--purple)}
+.hero h1 .smile{display:inline-block;color:var(--purple);transform:rotate(90deg);margin-left:.08em}
+.hero p.lead{font-size:1.1rem;max-width:34ch;color:#2b2533;font-weight:500}
+.hero-cta{display:flex;flex-direction:column;gap:12px;margin:26px 0 34px}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--cream);border:2px solid var(--ink);font-weight:700;font-size:.85rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--purple)}
+.sticker{display:none;position:absolute;right:-28px;top:120px;width:150px;height:150px;border-radius:50%;background:var(--purple);color:var(--yellow);place-items:center;text-align:center;font-family:var(--font-head);font-weight:800;font-size:.95rem;line-height:1.05;transform:rotate(12deg);border:2px solid var(--ink);opacity:.95}
+.sticker span{display:block;max-width:100px}
+
+/* marquee */
+.marquee{background:var(--ink);color:var(--yellow);border-top:2px solid var(--ink);overflow:hidden;white-space:nowrap}
+.marquee-track{display:inline-flex;gap:28px;padding:16px 0;animation:scroll 28s linear infinite;font-family:var(--font-head);font-weight:800;font-size:1.25rem;text-transform:uppercase}
+.marquee-track span{display:inline-flex;align-items:center;gap:28px}
+.marquee-track span::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--purple)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- Sections ---------- */
+section{padding:72px 0}
+.sec-head{margin-bottom:30px}
+.sec-head h2{font-size:clamp(2.1rem,9vw,3.8rem);font-weight:800;margin-top:10px}
+.sec-head p{margin-top:14px;color:var(--muted);max-width:52ch;font-size:1.05rem}
+
+/* manifesto */
+.manifesto{background:var(--purple);color:#fff}
+.manifesto .eyebrow{color:var(--yellow)}
+.manifesto blockquote{font-family:var(--font-head);font-weight:700;font-size:clamp(1.65rem,7vw,3.2rem);line-height:1.12;margin:18px 0 24px}
+.manifesto blockquote em{font-style:normal;color:var(--yellow)}
+.manifesto p{max-width:56ch;color:#E8E1FF;font-size:1.05rem}
+.manifesto .note{margin-top:20px;font-size:.92rem;color:#CFC3FF;font-style:italic}
+
+/* services */
+.services{display:grid;gap:14px}
+.svc{background:#fff;border:2px solid var(--ink);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden}
+.svc:nth-child(2){background:var(--yellow)}
+.svc:nth-child(3){background:var(--purple);color:#fff;border-color:var(--purple)}
+.svc:nth-child(3) p{color:#E8E1FF}
+.svc:nth-child(4){background:var(--ink);color:#fff}
+.svc:nth-child(4) p{color:#CFC9DA}
+.svc-num{font-family:var(--font-head);font-weight:800;font-size:.9rem;opacity:.7}
+.svc h3{font-size:clamp(1.3rem,5.6vw,1.65rem);margin:10px 0 10px;font-weight:800}
+.svc p{color:var(--muted)}
+.svc ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.svc li{font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:999px;border:1.5px solid currentColor}
+
+/* highlights filter (like IG story highlights) */
+.highlights{display:flex;gap:14px;overflow-x:auto;padding:4px var(--gutter) 14px;margin:0 calc(var(--gutter) * -1);scroll-snap-type:x mandatory;scrollbar-width:none}
+.highlights::-webkit-scrollbar{display:none}
+.hl-btn{flex:none;scroll-snap-align:start;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:76px;color:var(--ink)}
+.hl-ring{width:72px;height:72px;flex:none;border-radius:50%;padding:3px;background:var(--ink);display:grid;grid-template-columns:100%;place-items:center;transition:background .2s}
+.hl-in{width:100%;height:100%;min-width:0;overflow:hidden;border-radius:50%;background:var(--yellow);border:3px solid var(--cream);display:grid;place-items:center;font-family:var(--font-body);font-weight:800;font-size:.58rem;color:var(--purple);text-transform:uppercase;text-align:center;line-height:1.05;padding:4px}
+.hl-btn span.lbl{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.hl-btn[aria-pressed="true"] .hl-ring{background:var(--purple)}
+.hl-btn[aria-pressed="true"] .hl-in{background:var(--purple);color:var(--yellow)}
+
+/* work grid */
+.work-grid{display:grid;gap:14px;margin-top:18px}
+.work{border-radius:var(--radius);border:2px solid var(--ink);overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:opacity .25s,transform .25s var(--ease)}
+.work[hidden]{display:none}
+.work-cover{aspect-ratio:5/4;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:20px;overflow:hidden}
+.work-cover .tag{align-self:flex-start;background:var(--cream);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:5px 12px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.work-cover h3{font-size:clamp(2rem,10vw,2.8rem);font-weight:800;position:relative;z-index:1}
+.work-cover .big{position:absolute;right:-20px;bottom:-40px;font-family:var(--font-head);font-weight:800;font-size:13rem;line-height:1;opacity:.16}
+.c-yellow{background:var(--yellow);color:var(--ink)}
+.c-purple{background:var(--purple);color:#fff}
+.c-ink{background:var(--ink);color:var(--yellow)}
+.c-teal{background:#2E6E73;color:#FCEFD6}
+.c-orange{background:#E85D2C;color:#fff}
+.c-cream{background:#F4E8FF;color:var(--purple-deep)}
+.work-body{padding:18px 20px 22px}
+.work-body p{color:var(--muted);font-size:.98rem}
+.work-body .what{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.work-body .what span{font-size:.75rem;font-weight:800;background:#F1ECFF;color:var(--purple);border-radius:8px;padding:4px 8px}
+.empty{display:none;padding:30px;border:2px dashed var(--ink);border-radius:var(--radius);text-align:center;font-weight:700}
+
+/* process */
+.process{background:var(--ink);color:#fff}
+.process .eyebrow{color:var(--yellow)}
+.process .sec-head p{color:#CFC9DA}
+.steps{display:grid;gap:12px;counter-reset:s}
+.step{border:2px solid #2E2A38;border-radius:var(--radius);padding:22px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+.step-n{width:48px;height:48px;border-radius:50%;background:var(--yellow);color:var(--ink);display:grid;place-items:center;font-family:var(--font-head);font-weight:800;font-size:1.2rem}
+.step h3{font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.step p{color:#CFC9DA}
+
+/* about */
+.about{background:var(--yellow)}
+.about-card{background:var(--cream);border:2px solid var(--ink);border-radius:var(--radius);padding:26px;margin-top:8px}
+.about-card h3{font-family:var(--font-head);font-size:1.9rem;font-weight:800;margin-bottom:12px}
+.about-card p+p{margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.stat{background:var(--purple);color:#fff;border-radius:18px;padding:16px 10px;text-align:center}
+.stat b{display:block;font-family:var(--font-head);font-size:1.7rem;color:var(--yellow)}
+.stat span{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* stai party / merch */
+.party{background:var(--cream);text-align:center}
+.party h2{font-size:clamp(2.8rem,14vw,6rem);font-weight:800}
+.party h2 span{color:var(--purple)}
+.party p{max-width:46ch;margin:14px auto 24px;color:var(--muted)}
+.stickers{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.stk{padding:10px 16px;border-radius:999px;border:2px solid var(--ink);font-family:var(--font-head);font-weight:800;transform:rotate(var(--r,0deg))}
+
+/* contact */
+.contact{background:var(--purple);color:#fff}
+.contact .eyebrow{color:var(--yellow)}
+.contact h2{font-size:clamp(2.3rem,10vw,4.2rem);font-weight:800;margin:10px 0 14px}
+.contact h2 span{color:var(--yellow)}
+.contact .lead{color:#E8E1FF;max-width:48ch}
+form{margin-top:28px;display:grid;gap:16px;background:var(--cream);color:var(--ink);border-radius:var(--radius);padding:22px;border:2px solid var(--ink)}
+label{font-weight:800;font-size:.9rem;display:block;margin-bottom:6px}
+input,textarea,select{width:100%;font:inherit;font-size:16px;padding:14px 16px;border-radius:14px;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+.help{font-size:.82rem;color:var(--muted);margin-top:6px}
+.err{font-size:.85rem;color:#B42318;font-weight:700;margin-top:6px;display:none}
+.field.invalid input,.field.invalid textarea{border-color:#B42318}
+.field.invalid .err{display:block}
+.alt-contacts{display:grid;gap:10px;margin-top:20px}
+.alt-contacts .btn{width:100%}
+
+footer{background:var(--ink);color:#CFC9DA;padding:40px 0 calc(40px + env(safe-area-inset-bottom));font-size:.9rem}
+footer .logo{color:#fff;margin-bottom:14px}
+footer .logo small{color:var(--yellow)}
+footer a{text-decoration:none;font-weight:700;color:#fff}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--yellow);color:var(--ink);border:2px solid var(--ink);padding:14px 18px;border-radius:16px;font-weight:800;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:70;width:max-content;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- Larger screens ---------- */
+@media (min-width:768px){
+  :root{--gutter:32px}
+  .nav{display:flex}
+  .top-actions .btn-sm{display:inline-flex}
+  .menu-btn{display:none}
+  .hero{padding-top:64px}
+  .hero-cta{flex-direction:row}
+  .sticker{display:grid;width:180px;height:180px;right:6%;top:auto;bottom:110px;font-size:1.1rem}
+  .work-cover h3{font-size:clamp(1.8rem,3.2vw,2.4rem)}
+  .services{grid-template-columns:repeat(2,1fr)}
+  .work-grid{grid-template-columns:repeat(2,1fr)}
+  .work-cover{aspect-ratio:4/5}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  .highlights{justify-content:flex-start}
+}
+@media (min-width:1024px){
+  .work-grid{grid-template-columns:repeat(3,1fr)}
+  .steps{grid-template-columns:repeat(4,1fr)}
+  .step{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Vai al contenuto</a>
+<p class="proto">Prototipo non ufficiale realizzato da Pasquale Ercolino per STAICONTENT Studio</p>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="STAICONTENT Studio, torna all'inizio">
+      <span class="logo-mark" aria-hidden="true">S</span>
+      <span>staicontent<small>studio</small></span>
+    </a>
+    <nav class="nav" aria-label="Principale">
+      <a href="#servizi">Servizi</a>
+      <a href="#lavori">Lavori</a>
+      <a href="#metodo">Metodo</a>
+      <a href="#chi-siamo">Chi siamo</a>
+    </nav>
+    <div class="top-actions">
+      <a href="#contatti" class="btn btn-ink btn-sm">Scrivici</a>
+      <button class="menu-btn" id="menuOpen" aria-label="Apri menu" aria-expanded="false" aria-controls="sheet">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="sheet-head">
+    <span class="logo"><span class="logo-mark" aria-hidden="true">S</span><span>staicontent<small style="color:var(--yellow)">studio</small></span></span>
+    <button class="menu-btn" id="menuClose" aria-label="Chiudi menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Menu mobile">
+    <a href="#servizi">Servizi</a>
+    <a href="#lavori">Lavori</a>
+    <a href="#metodo">Metodo</a>
+    <a href="#chi-siamo">Chi siamo</a>
+    <a href="#contatti">Contatti</a>
+  </nav>
+  <a href="#contatti" class="btn btn-yellow">Raccontaci di te</a>
+</div>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" id="top" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">Studio creativo · Salerno</span>
+      <h1>Prima di fare una storia, <span class="hl">ascoltiamo la tua</span> <span class="smile" aria-hidden="true">:)</span></h1>
+      <p class="lead">Social media, contenuti, branding e visual design per brand, negozi, eventi e festival. Raccontiamo le persone che ci sono dietro, con verità ed emozione.</p>
+      <div class="hero-cta">
+        <a href="#contatti" class="btn btn-ink">Raccontaci qualcosa di te
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#lavori" class="btn btn-ghost">Guarda i lavori</a>
+      </div>
+      <div class="hero-badges">
+        <span class="chip"><span class="dot"></span>SMM</span>
+        <span class="chip"><span class="dot"></span>Content creator</span>
+        <span class="chip"><span class="dot"></span>Brand &amp; visual</span>
+        <span class="chip"><span class="dot"></span>Festival</span>
+      </div>
+    </div>
+    <div class="sticker" aria-hidden="true"><span>E tu come STAI?</span></div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Eventi</span><span>Negozi</span><span>Beauty</span><span>Food</span><span>Branding</span><span>Festival</span><span>Real estate</span><span>Hospitality</span>
+        <span>Eventi</span><span>Negozi</span><span>Beauty</span><span>Food</span><span>Branding</span><span>Festival</span><span>Real estate</span><span>Hospitality</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <div class="wrap reveal">
+      <span class="eyebrow">Il nostro punto di partenza</span>
+      <blockquote>Ogni progetto che abbracciamo non è solo un brand, ma <em>una storia di vita vera.</em></blockquote>
+      <p>È il motivo per cui hai iniziato, sono i sacrifici che non si vedono e che ti hanno portato fin qui. Noi partiamo da questo: ti ascoltiamo e ti raccontiamo.</p>
+      <p class="note">*Le scene in cui parlano male di noi le abbiamo tagliate tutte.</p>
+    </div>
+  </section>
+
+  <!-- SERVIZI -->
+  <section id="servizi">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" style="color:var(--purple)">Cosa facciamo</span>
+        <h2>Tutto quello che serve per farti raccontare bene.</h2>
+      </div>
+      <div class="services">
+        <article class="svc reveal">
+          <span class="svc-num">01</span>
+          <h3>Social media management</h3>
+          <p>Strategia, piano editoriale e gestione dei profili. Ci occupiamo di tutto il calendario, tu continui a fare il tuo lavoro.</p>
+          <ul><li>Strategia</li><li>Piano editoriale</li><li>Community</li></ul>
+        </article>
+        <article class="svc reveal">
+          <span class="svc-num">02</span>
+          <h3>Content creation</h3>
+          <p>Reel, foto, interviste, voiceover e trend: contenuti girati sul posto, con le persone vere del tuo brand.</p>
+          <ul><li>Reel</li><li>Foto</li><li>Interviste</li><li>POV</li></ul>
+        </article>
+        <article class="svc reveal">
+          <span class="svc-num">03</span>
+          <h3>Brand &amp; visual design</h3>
+          <p>Identità visive, loghi, poster, sticker e merch. Anche caratteri disegnati a mano, quando servono.</p>
+          <ul><li>Identità</li><li>Logo</li><li>Poster</li><li>Merch</li></ul>
+        </article>
+        <article class="svc reveal">
+          <span class="svc-num">04</span>
+          <h3>Comunicazione di eventi e festival</h3>
+          <p>Dalla strategia ai contenuti fino al racconto live durante l'evento. Musica, cinema, food, natura e sport.</p>
+          <ul><li>Pre-evento</li><li>Live</li><li>Aftermovie</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAVORI -->
+  <section id="lavori" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" style="color:var(--purple)">Lavori</span>
+        <h2>Le storie che abbiamo raccontato.</h2>
+        <p>Filtra per settore, come nelle storie in evidenza.</p>
+      </div>
+      <div class="highlights" role="group" aria-label="Filtra i lavori per settore">
+        <button class="hl-btn" aria-pressed="true" data-filter="all"><span class="hl-ring"><span class="hl-in">Tutti</span></span><span class="lbl">Tutti</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="festival"><span class="hl-ring"><span class="hl-in">Festival</span></span><span class="lbl">Festival</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="eventi"><span class="hl-ring"><span class="hl-in">Eventi</span></span><span class="lbl">Eventi</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="branding"><span class="hl-ring"><span class="hl-in">Branding</span></span><span class="lbl">Branding</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="beauty"><span class="hl-ring"><span class="hl-in">Beauty</span></span><span class="lbl">Beauty</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="negozi"><span class="hl-ring"><span class="hl-in">Negozi</span></span><span class="lbl">Negozi</span></button>
+        <button class="hl-btn" aria-pressed="false" data-filter="merch"><span class="hl-ring"><span class="hl-in">Merch</span></span><span class="lbl">Merch</span></button>
+      </div>
+
+      <div class="work-grid" id="workGrid">
+        <article class="work reveal" data-cat="festival branding">
+          <div class="work-cover c-purple">
+            <span class="tag">Festival</span>
+            <h3>Limen Salerno Festival</h3>
+            <span class="big" aria-hidden="true">L</span>
+          </div>
+          <div class="work-body">
+            <p>Comunicazione e grafiche per più edizioni. Lo studio è nato qui, da persone che si sono conosciute a Limen.</p>
+            <div class="what"><span>Comunicazione</span><span>Grafiche</span><span>Live</span></div>
+          </div>
+        </article>
+        <article class="work reveal" data-cat="festival eventi">
+          <div class="work-cover c-teal">
+            <span class="tag">Festival · Cinema</span>
+            <h3>Movieboli<br>IV edizione</h3>
+            <span class="big" aria-hidden="true">M</span>
+          </div>
+          <div class="work-body">
+            <p>"Chi siete? Dove andate? Cosa portate?" Il lancio del festival di cinema al Cinema Teatro Italia di Eboli, dal 4 all'8 dicembre.</p>
+            <div class="what"><span>Lancio</span><span>Reel</span><span>Social</span></div>
+          </div>
+        </article>
+        <article class="work reveal" data-cat="branding festival">
+          <div class="work-cover c-orange">
+            <span class="tag">Branding · Sport</span>
+            <h3>Cilento Xtreme</h3>
+            <span class="big" aria-hidden="true">X</span>
+          </div>
+          <div class="work-body">
+            <p>Comunicazione e identità visiva dell'evento, con caratteri disegnati a mano (sì, quelli della slide che abbiamo tolto).</p>
+            <div class="what"><span>Identità visiva</span><span>Comunicazione</span></div>
+          </div>
+        </article>
+        <article class="work reveal" data-cat="beauty negozi">
+          <div class="work-cover c-cream">
+            <span class="tag">Beauty</span>
+            <h3>SoulHair</h3>
+            <span class="big" aria-hidden="true">S</span>
+          </div>
+          <div class="work-body">
+            <p>Interviste in salone: c'è chi vuole rilassarsi, chi chiacchierare, chi chiede la tisana e chi il caffè. Tu che cliente sei?</p>
+            <div class="what"><span>Interviste</span><span>Reel</span></div>
+          </div>
+        </article>
+        <article class="work reveal" data-cat="eventi negozi">
+          <div class="work-cover c-yellow">
+            <span class="tag">Eventi · Hospitality</span>
+            <h3>Lanificio Salerno</h3>
+            <span class="big" aria-hidden="true">L</span>
+          </div>
+          <div class="work-body">
+            <p>Contenuti girati sul posto e POV sui clienti tipo, raccontati con ironia.</p>
+            <div class="what"><span>Content</span><span>POV</span></div>
+          </div>
+        </article>
+        <article class="work reveal" data-cat="merch eventi branding">
+          <div class="work-cover c-ink">
+            <span class="tag">Merch · Party</span>
+            <h3>STAI PARTY</h3>
+            <span class="big" aria-hidden="true">:)</span>
+          </div>
+          <div class="work-body">
+            <p>Il compleanno in lavanderia che nessuno meritava e a cui sono venuti tutti. Poster e sticker sono disegnati da noi.</p>
+            <div class="what"><span>Poster</span><span>Sticker</span><span>Evento</span></div>
+          </div>
+        </article>
+      </div>
+      <p class="empty" id="empty">Qui ci sono altre storie da raccontare. Magari la tua?</p>
+    </div>
+  </section>
+
+  <!-- METODO -->
+  <section class="process" id="metodo">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Come lavoriamo</span>
+        <h2>Prima ascoltiamo. Poi raccontiamo.</h2>
+        <p>Il nostro metodo, che non cambia anche quando il cliente siamo noi.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><span class="step-n">1</span><div><h3>Ti ascoltiamo</h3><p>Una chiacchierata su di te, sul tuo brand e sul perché hai iniziato.</p></div></div>
+        <div class="step reveal"><span class="step-n">2</span><div><h3>Troviamo la storia</h3><p>Strategia, tono di voce e piano editoriale cuciti su di te.</p></div></div>
+        <div class="step reveal"><span class="step-n">3</span><div><h3>La giriamo</h3><p>Contenuti, grafiche e identità visiva, fatti sul posto con le persone vere.</p></div></div>
+        <div class="step reveal"><span class="step-n">4</span><div><h3>La facciamo vivere</h3><p>Pubblicazione, racconto live e community. Poi guardiamo cosa ha funzionato.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI SIAMO -->
+  <section class="about" id="chi-siamo">
+    <div class="wrap about-grid">
+      <div class="sec-head reveal" style="margin-bottom:0">
+        <span class="eyebrow" style="color:var(--purple)">Chi siamo</span>
+        <h2>Se vivi al sud non puoi fare quello che ti piace? E chi l'ha detto!</h2>
+      </div>
+      <div class="about-card reveal">
+        <h3>Nati a Limen.</h3>
+        <p>STAICONTENT è nato a un festival, da persone che si sono incontrate lì e hanno iniziato a collaborare, trasformando una passione in una professione.</p>
+        <p>Social media manager, content creator, brand e visual designer: un team di Salerno a cui piace parecchio raccontare le persone dietro ai brand, anche quando il brand siamo noi.</p>
+        <div class="stats">
+          <div class="stat"><b>50+</b><span>Progetti</span></div>
+          <div class="stat"><b>8</b><span>Settori</span></div>
+          <div class="stat"><b>∞</b><span>Caffè</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAI PARTY / MERCH -->
+  <section class="party">
+    <div class="wrap reveal">
+      <span class="eyebrow" style="color:var(--purple)">Merch</span>
+      <h2 style="margin-top:10px">E tu come <span>STAI?</span></h2>
+      <p>Poster e sticker STAI PARTY da attaccare da qualche parte nella tua vita. Scrivici e te li mandiamo.</p>
+      <div class="stickers" aria-hidden="true">
+        <span class="stk" style="--r:-6deg;background:var(--yellow)">STAI CONTENT</span>
+        <span class="stk" style="--r:4deg;background:var(--purple);color:#fff">:)</span>
+        <span class="stk" style="--r:-2deg;background:#fff">STAI PARTY</span>
+        <span class="stk" style="--r:7deg;background:var(--ink);color:var(--yellow)">E TU?</span>
+      </div>
+      <a class="btn btn-purple" href="https://ig.me/m/staicontent.studio" target="_blank" rel="noopener">Voglio gli sticker</a>
+    </div>
+  </section>
+
+  <!-- CONTATTI -->
+  <section class="contact" id="contatti">
+    <div class="wrap contact-grid">
+      <div class="reveal">
+        <span class="eyebrow">Contatti</span>
+        <h2>Raccontaci qualcosa di te <span>:)</span></h2>
+        <p class="lead">Messaggio o mail, scegli come ti trovi meglio. Insieme possiamo fare la differenza.</p>
+        <div class="alt-contacts">
+          <a class="btn btn-yellow" href="https://ig.me/m/staicontent.studio" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Scrivici su Instagram
+          </a>
+          <a class="btn btn-ghost" style="color:#fff;border-color:#fff" href="https://linktr.ee/staicontent" target="_blank" rel="noopener">Tutti i link</a>
+        </div>
+      </div>
+      <form id="form" novalidate class="reveal">
+        <div class="field">
+          <label for="nome">Come ti chiami?</label>
+          <input id="nome" name="nome" autocomplete="name" required>
+          <p class="err">Dicci almeno il tuo nome :)</p>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          <p class="err">Controlla l'indirizzo email.</p>
+        </div>
+        <div class="field">
+          <label for="settore">Di cosa ti occupi?</label>
+          <select id="settore" name="settore">
+            <option>Evento o festival</option><option>Negozio</option><option>Beauty</option><option>Food</option><option>Real estate</option><option>Hospitality</option><option>Altro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="msg">La tua storia</label>
+          <textarea id="msg" name="msg" required></textarea>
+          <p class="help">Perché hai iniziato, cosa fai, cosa ti piacerebbe raccontare.</p>
+          <p class="err">Scrivici due righe, anche brevi.</p>
+        </div>
+        <button class="btn btn-ink" type="submit">Invia la tua storia</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo"><span class="logo-mark" aria-hidden="true">S</span><span>staicontent<small>studio</small></span></span>
+    <p>Studio creativo tra SMM, content creator, brand e visual designer. Salerno, Campania.</p>
+    <div class="foot-links">
+      <a href="https://www.instagram.com/staicontent.studio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://linktr.ee/staicontent" target="_blank" rel="noopener">Linktree</a>
+      <a href="#contatti">Contatti</a>
+    </div>
+    <p>Prototipo © 2026 Pasquale Ercolino. Visibile solo per valutare la proposta: copia e uso non consentiti senza accordo.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// menu
+const sheet=document.getElementById('sheet'),openB=document.getElementById('menuOpen'),closeB=document.getElementById('menuClose');
+const setMenu=o=>{sheet.classList.toggle('open',o);openB.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':'';(o?closeB:openB).focus()};
+openB.onclick=()=>setMenu(true);closeB.onclick=()=>setMenu(false);
+sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet.classList.contains('open'))setMenu(false)});
+
+// highlight filters
+const btns=[...document.querySelectorAll('.hl-btn')],works=[...document.querySelectorAll('.work')],empty=document.getElementById('empty');
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const f=b.dataset.filter;let n=0;
+  works.forEach(w=>{const show=f==='all'||w.dataset.cat.split(' ').includes(f);w.hidden=!show;if(show){n++;w.classList.add('in')}});
+  empty.style.display=n?'none':'block';
+}));
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// form (prototype: validates, no send)
+const toast=document.getElementById('toast');
+const say=t=>{toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3200)};
+document.getElementById('form').addEventListener('submit',e=>{
+  e.preventDefault();let first=null;
+  e.target.querySelectorAll('.field').forEach(f=>{const i=f.querySelector('input,textarea');if(!i)return;const bad=!i.checkValidity()||!i.value.trim();f.classList.toggle('invalid',bad);i.setAttribute('aria-invalid',bad);if(bad&&!first)first=i});
+  if(first){first.focus();return}
+  e.target.reset();say('Grazie! Ti rispondiamo presto :)');
+});
+</script>
+</body>
+</html>
